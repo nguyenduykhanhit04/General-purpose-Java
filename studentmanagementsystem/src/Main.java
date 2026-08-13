@@ -29,6 +29,22 @@ public class Main {
                 LocalDateTime.now()
         );
 
+        // CREATE
+        repository.add(student1);
+        repository.add(student2);
+
+        // READ ALL
+        System.out.println("=== BEFORE UPDATE ===");
+        for (Student student : repository.findAll()) {
+            System.out.println(student);
+        }
+
+        // FIND BY ID
+        System.out.println("\n=== FIND SV002 ===");
+        repository.findById("SV002")
+                .ifPresent(System.out::println);
+
+        // UPDATE
         Student updatedStudent = new Student(
                 "SV002",
                 "Nguyen Van B",
@@ -39,13 +55,15 @@ public class Main {
                 student2.getCreatedAt()
         );
 
-        repository.add(student1);
-        repository.add(student2);
-        repository.findAll();
-        repository.findById("SV002");
-        repository.delete("SV001");
-        repository.update(updatedStudent);
+        student2.setAge(55);
+        repository.update(student2);
+//        repository.update(updatedStudent);
 
+        // DELETE
+        repository.delete("SV001");
+
+        // READ ALL
+        System.out.println("\n=== AFTER UPDATE + DELETE ===");
         for (Student student : repository.findAll()) {
             System.out.println(student);
         }

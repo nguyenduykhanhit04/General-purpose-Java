@@ -44,13 +44,26 @@ public class StudentRepository {
         students.removeIf(student -> student.getId().equals(id));
     }
 
+    // Khi cập nhật thi phai viet lai toan bo object => bất tiện
+//    public void update(Student student) {
+//        Optional<Student> existingStudent  =  findById(student.getId());
+//
+//        existingStudent.ifPresent(oldStudent -> {
+//            int index = students.indexOf(oldStudent); // Tìm vị trí của Student cũ.
+//            students.set(index, student); // Thay phần tử cũ bằng Student mới.
+//        });
+//
+//    }
+
     public void update(Student student) {
-        Optional<Student> existingStudent  =  findById(student.getId());
+        Optional<Student> existingStudent = findById(student.getId());
 
         existingStudent.ifPresent(oldStudent -> {
-            int index = students.indexOf(oldStudent); // Tìm vị trí của Student cũ.
-            students.set(index, student); // Thay phần tử cũ bằng Student mới.
+            oldStudent.setName(student.getName());
+            oldStudent.setAge(student.getAge());
+            oldStudent.setEmail(student.getEmail());
+            oldStudent.setGender(student.getGender());
+            oldStudent.setGpa(student.getGpa());
         });
-
     }
 }
