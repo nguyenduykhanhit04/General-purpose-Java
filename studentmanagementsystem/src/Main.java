@@ -1,13 +1,16 @@
 import model.Gender;
 import model.Student;
 import repository.StudentRepository;
+import service.StudentService;
 
 import java.time.LocalDateTime;
 
 public class Main {
     public static void main(String[] args) {
 
-        StudentRepository repository = new StudentRepository();
+        StudentRepository studentRepository = new StudentRepository();
+
+        StudentService studentService = new StudentService(studentRepository);
 
         Student student1 = new Student(
                 "SV001",
@@ -30,18 +33,19 @@ public class Main {
         );
 
         // CREATE
-        repository.add(student1);
-        repository.add(student2);
+        studentService.addStudent(student1);
+//        service.addStudent(student1); // Student ID xalready exists
+        studentService.addStudent(student2);
 
         // READ ALL
         System.out.println("=== BEFORE UPDATE ===");
-        for (Student student : repository.findAll()) {
+        for (Student student : studentService.getAllStudents()) {
             System.out.println(student);
         }
 
         // FIND BY ID
         System.out.println("\n=== FIND SV002 ===");
-        repository.findById("SV002")
+        studentService.getStudentById("SV002")
                 .ifPresent(System.out::println);
 
         // UPDATE
@@ -56,15 +60,15 @@ public class Main {
         );
 
         student2.setAge(55);
-        repository.update(student2);
+        studentService.upateStudent(student2);
 //        repository.update(updatedStudent);
 
         // DELETE
-        repository.delete("SV001");
+        studentService.deleteStudent("SV001");
 
         // READ ALL
         System.out.println("\n=== AFTER UPDATE + DELETE ===");
-        for (Student student : repository.findAll()) {
+        for (Student student : studentService.getAllStudents()) {
             System.out.println(student);
         }
     }
