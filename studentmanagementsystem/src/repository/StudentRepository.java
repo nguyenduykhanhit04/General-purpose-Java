@@ -2,6 +2,7 @@ package repository;
 
 import model.Student;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,7 @@ public class StudentRepository {
     public List<Student> findAll() {
         // List.copyOf(students) tạo ra một List không thể chỉnh sửa từ danh sách hiện tại.
         // sẽ không xóa được danh sách bên trong Repository
-        //Đây là một cách bảo vệ dữ liệu bên trong object → liên quan trực tiếp đến encapsulation.
+        // Đây là một cách bảo vệ dữ liệu bên trong object → liên quan trực tiếp đến encapsulation.
         return List.copyOf(students);
     }
 
