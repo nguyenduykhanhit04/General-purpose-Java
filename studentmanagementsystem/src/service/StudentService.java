@@ -1,5 +1,7 @@
 package service;
 
+import exception.DuplicateStudentException;
+import exception.StudentNotFoundException;
 import model.Student;
 import repository.StudentRepository;
 
@@ -15,7 +17,7 @@ public class StudentService {
 
     public void addStudent(Student student) {
         if (studentRepository.findById(student.getId()).isPresent()) {
-            throw new RuntimeException("Student ID already exists");
+            throw new DuplicateStudentException("Student ID already exists" + student.getId());
         }
 
         studentRepository.add(student);
@@ -23,7 +25,7 @@ public class StudentService {
 
     public void upateStudent(Student student) {
         if (studentRepository.findById(student.getId()).isEmpty()) {
-            throw new RuntimeException("Student not found");
+            throw new StudentNotFoundException("Student not found" + student.getId());
         }
 
         studentRepository.update(student);
@@ -31,7 +33,7 @@ public class StudentService {
 
     public void deleteStudent(String id) {
         if (studentRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("Student not found");
+            throw new StudentNotFoundException("Student not found" + id);
         }
 
         studentRepository.delete(id);

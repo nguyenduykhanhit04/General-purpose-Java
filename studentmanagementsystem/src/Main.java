@@ -1,3 +1,5 @@
+import exception.DuplicateStudentException;
+import exception.StudentNotFoundException;
 import model.Gender;
 import model.Student;
 import repository.StudentRepository;
@@ -33,9 +35,12 @@ public class Main {
         );
 
         // CREATE
-        studentService.addStudent(student1);
-//        service.addStudent(student1); // Student ID xalready exists
-        studentService.addStudent(student2);
+        try {
+            studentService.addStudent(student1);
+            studentService.addStudent(student2);
+        } catch (DuplicateStudentException e) {
+            System.out.println(e.getMessage());
+        }
 
         // READ ALL
         System.out.println("=== BEFORE UPDATE ===");
@@ -64,7 +69,11 @@ public class Main {
 //        repository.update(updatedStudent);
 
         // DELETE
-        studentService.deleteStudent("SV001");
+        try {
+            studentService.deleteStudent("SV001");
+        } catch (StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
         // READ ALL
         System.out.println("\n=== AFTER UPDATE + DELETE ===");
