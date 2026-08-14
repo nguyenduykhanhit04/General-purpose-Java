@@ -1,4 +1,5 @@
 import exception.DuplicateStudentException;
+import exception.InvalidStudentException;
 import exception.StudentNotFoundException;
 import model.Gender;
 import model.Student;
@@ -79,6 +80,23 @@ public class Main {
         System.out.println("\n=== AFTER UPDATE + DELETE ===");
         for (Student student : studentService.getAllStudents()) {
             System.out.println(student);
+        }
+
+        // Test Invalid Student Exception
+        Student invalidStudent = new Student(
+                "SV003",
+                "",
+                -5,
+                "abc",
+                Gender.MALE,
+                15,
+                LocalDateTime.now()
+        );
+
+        try {
+            studentService.addStudent(invalidStudent);
+        } catch (InvalidStudentException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
