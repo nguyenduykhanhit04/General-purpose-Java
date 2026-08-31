@@ -6,6 +6,7 @@ import exception.StudentNotFoundException;
 import model.Student;
 import repository.StudentRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,29 +14,38 @@ public class StudentService {
     private final StudentRepository studentRepository;
 
     private void validateStudent(Student student) {
+
+        List<String> errors = new ArrayList<>();
+
         if (student.getId() == null || student.getId().isBlank()) {
-            throw new InvalidStudentException("Student ID cannot be empty");
+            errors.add("Student ID cannot be empty");
         }
 
         if (student.getName() == null || student.getName().isBlank()) {
-            throw new InvalidStudentException("Student name cannot be empty");
+           errors.add("Student name cannot be empty");
         }
 
         if (student.getAge() <= 0) {
-            throw new InvalidStudentException("Student age must be greater than 0");
+            errors.add("Student age must be greater than 0");
         }
 
         if (student.getGpa() < 0 || student.getGpa() > 10) {
-            throw new InvalidStudentException("Student GPA must be between 0 and 10");
+            errors.add("Student GPA must be between 0 and 10");
         }
 
         if (student.getGender() == null) {
-            throw new InvalidStudentException("Student gender cannot be null");
+            errors.add("Student gender cannot be null");
         }
 
         if (student.getEmail() == null ||
             !student.getEmail().contains("@")) {
-            throw new InvalidStudentException("Student email is invalid");
+            errors.add("Student email is invalid");
+        }
+
+        if (!errors.isEmpty()) {
+            throw new InvalidStudentException(
+                    String.join(", ", errors)
+            );
         }
     }
 
@@ -53,7 +63,7 @@ public class StudentService {
         studentRepository.add(student);
     }
 
-    public void upateStudent(Student student) {
+    public void updateStudent(Student student) {
         validateStudent(student);
 
         if (studentRepository.findById(student.getId()).isEmpty()) {

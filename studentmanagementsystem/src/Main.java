@@ -66,7 +66,7 @@ public class Main {
         );
 
         student2.setAge(55);
-        studentService.upateStudent(student2);
+        studentService.updateStudent(student2);
 //        repository.update(updatedStudent);
 
         // DELETE
