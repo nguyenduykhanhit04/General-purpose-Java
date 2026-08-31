@@ -88,4 +88,17 @@ public class StudentService {
     public Optional<Student> getStudentById(String id) {
         return studentRepository.findById(id);
     }
+
+    // Search theo tên
+    public List<Student> searchByName(String keyword) {
+        // Lấy toàn bộ Student → duyệt từng Student → lọc theo điều kiện → trả về List mới.
+        return studentRepository.findAll()
+            .stream()
+            .filter(student ->
+                    student.getName()
+                        .toLowerCase()
+                        .contains(keyword.toLowerCase())
+        )
+        .toList();
+    }
 }

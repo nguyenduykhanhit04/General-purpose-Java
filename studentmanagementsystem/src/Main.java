@@ -7,6 +7,7 @@ import repository.StudentRepository;
 import service.StudentService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -97,6 +98,13 @@ public class Main {
             studentService.addStudent(invalidStudent);
         } catch (InvalidStudentException e) {
             System.out.println(e.getMessage());
+        }
+
+        List<Student> results = studentService.searchByName("Nguyen");
+
+        System.out.println("Sau khi search");
+        for (Student student : results) {
+            System.out.println(student);
         }
     }
 }
