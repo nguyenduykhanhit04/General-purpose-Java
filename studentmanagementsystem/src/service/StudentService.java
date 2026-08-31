@@ -3,6 +3,7 @@ package service;
 import exception.DuplicateStudentException;
 import exception.InvalidStudentException;
 import exception.StudentNotFoundException;
+import model.Gender;
 import model.Student;
 import repository.StudentRepository;
 
@@ -100,5 +101,29 @@ public class StudentService {
                         .contains(keyword.toLowerCase())
         )
         .toList();
+    }
+
+    // Search theo gpa
+    public List<Student> searchByGPA(double minGPA) {
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> student.getGpa() >= minGPA)
+                .toList();
+    }
+
+    // Search theo age
+    public List<Student> searchByAge(int age) {
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> student.getAge() == age)
+                .toList();
+    }
+
+    // Search theo Gender
+    public List<Student> searchByGender(Gender gender) {
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> student.getGender() == gender)
+                .toList();
     }
 }

@@ -100,10 +100,21 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        List<Student> results = studentService.searchByName("Nguyen");
-
+        List<Student> resultName = studentService.searchByName("Nguyen");
+        List<Student> resultGPA = studentService.searchByGPA(10.0);
+        List<Student> resultAge = studentService.searchByAge(55);
+        List<Student> resultGender = studentService.searchByGender(Gender.FEMALE);
         System.out.println("Sau khi search");
-        for (Student student : results) {
+        for (Student student : resultName) {
+            System.out.println(student);
+        }
+        for (Student student : resultGPA) {
+            System.out.println(student);
+        }
+        for (Student student : resultAge) {
+            System.out.println(student);
+        }
+        for (Student student : resultGender) {
             System.out.println(student);
         }
     }
