@@ -169,4 +169,14 @@ public class StudentService {
                 )).toList();
     }
 
+    public List<Student> searchFemaleStudentsWithHighGPA(double minGPA) {
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> (student.getGender() == Gender.FEMALE
+                                && student.getGpa() >= minGPA)
+                                ||
+                                (student.getGender() == Gender.MALE
+                                        && student.getGpa() >= 9.0))
+                .toList();
+    }
 }

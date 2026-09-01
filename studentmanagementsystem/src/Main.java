@@ -163,5 +163,12 @@ public class Main {
         for (Student student : resultSortNameAndGPADesc) {
             System.out.println(student);
         }
+
+        // Search dieu kien
+        System.out.println("\n=== SEARCH DIEU KIEN ===");
+        List<Student> resultSearchFemaleWithHighGPA = studentService.searchFemaleStudentsWithHighGPA(8.0);
+        for (Student student : resultSearchFemaleWithHighGPA) {
+            System.out.println(student);
+        }
     }
 }
