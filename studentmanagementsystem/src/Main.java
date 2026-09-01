@@ -146,6 +146,8 @@ public class Main {
         List<Student> resultSortGPA = studentService.sortByGPA();
         List<Student> resultSortGPAReversed = studentService.sortByGPAReversed();
         List<Student> resultSortName = studentService.sortByName();
+        List<Student> resultSortNameAndGPA = studentService.sortByNameThenGpa();
+        List<Student> resultSortNameAndGPADesc = studentService.sortByNameThenByGPADesc();
         for (Student student : resultSortGPA) {
             System.out.println(student);
         }
@@ -153,6 +155,12 @@ public class Main {
             System.out.println(student);
         }
         for (Student student : resultSortName) {
+            System.out.println(student);
+        }
+        for (Student student : resultSortNameAndGPA) {
+            System.out.println(student);
+        }
+        for (Student student : resultSortNameAndGPADesc) {
             System.out.println(student);
         }
     }

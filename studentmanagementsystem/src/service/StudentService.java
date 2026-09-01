@@ -151,4 +151,22 @@ public class StudentService {
                 .sorted(Comparator.comparing(Student::getName).reversed())
                 .toList();
     }
+
+    public List<Student> sortByNameThenGpa() {
+        return studentRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Student::getName)
+                        .thenComparing(Student::getGpa))
+                .toList();
+    }
+
+    public List<Student> sortByNameThenByGPADesc() {
+        return studentRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Student::getName).thenComparing(
+                        Student::getGpa,
+                        Comparator.reverseOrder()
+                )).toList();
+    }
+
 }
