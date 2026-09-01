@@ -8,6 +8,7 @@ import model.Student;
 import repository.StudentRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,6 +125,30 @@ public class StudentService {
         return studentRepository.findAll()
                 .stream()
                 .filter(student -> student.getGender() == gender)
+                .toList();
+    }
+
+    // Sort tang dan
+    public List<Student> sortByGPA() {
+        return studentRepository.findAll()
+                .stream()
+                // Comparator -> Luat de so sanh 2 object
+                .sorted(Comparator.comparing(Student::getGpa)) // Method Reference. Nó tương đương với: student -> student.getGpa()
+                .toList();
+    }
+
+    // Sort giam dan
+    public List<Student> sortByGPAReversed() {
+        return studentRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Student::getGpa).reversed())
+                .toList();
+    }
+
+    public List<Student> sortByName() {
+        return studentRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Student::getName).reversed())
                 .toList();
     }
 }

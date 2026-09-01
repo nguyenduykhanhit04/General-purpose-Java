@@ -28,6 +28,16 @@ public class StudentData {
                 LocalDateTime.now()
         );
 
-        return List.of(student1, student2);
+        Student student3 = new Student(
+                "SV003",
+                "Nguyen Van C",
+                22,
+                "C@gmail.com",
+                Gender.MALE,
+                9.8,
+                LocalDateTime.now()
+        );
+
+        return List.of(student1, student2, student3);
     }
 }

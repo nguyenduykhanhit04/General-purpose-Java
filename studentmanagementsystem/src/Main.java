@@ -138,5 +138,22 @@ public class Main {
         for (Student student : resultGender) {
             System.out.println(student);
         }
+
+        // =========================
+        // SORT
+        // =========================
+        System.out.println("\n=== SORT BY GPA ===");
+        List<Student> resultSortGPA = studentService.sortByGPA();
+        List<Student> resultSortGPAReversed = studentService.sortByGPAReversed();
+        List<Student> resultSortName = studentService.sortByName();
+        for (Student student : resultSortGPA) {
+            System.out.println(student);
+        }
+        for (Student student : resultSortGPAReversed) {
+            System.out.println(student);
+        }
+        for (Student student : resultSortName) {
+            System.out.println(student);
+        }
     }
 }
