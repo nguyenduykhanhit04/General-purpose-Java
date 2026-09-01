@@ -1,3 +1,4 @@
+import data.StudentData;
 import exception.DuplicateStudentException;
 import exception.InvalidStudentException;
 import exception.StudentNotFoundException;
@@ -6,84 +7,88 @@ import model.Student;
 import repository.StudentRepository;
 import service.StudentService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
 
-        StudentRepository studentRepository = new StudentRepository();
+        StudentRepository studentRepository =
+                new StudentRepository();
 
-        StudentService studentService = new StudentService(studentRepository);
+        StudentService studentService =
+                new StudentService(studentRepository);
 
-        Student student1 = new Student(
-                "SV001",
-                "Nguyen Van A",
-                20,
-                "a@gmail.com",
-                Gender.MALE,
-                8.5,
-                LocalDateTime.now()
-        );
-
-        Student student2 = new Student(
-                "SV002",
-                "Nguyen Van B",
-                21,
-                "b@gmail.com",
-                Gender.FEMALE,
-                9.5,
-                LocalDateTime.now()
-        );
-
+        // =========================
         // CREATE
+        // =========================
+
+        List<Student> students =
+                StudentData.createStudents();
+
         try {
-            studentService.addStudent(student1);
-            studentService.addStudent(student2);
+            for (Student student : students) {
+                studentService.addStudent(student);
+            }
         } catch (DuplicateStudentException e) {
             System.out.println(e.getMessage());
         }
 
+        // =========================
         // READ ALL
+        // =========================
+
         System.out.println("=== BEFORE UPDATE ===");
+
         for (Student student : studentService.getAllStudents()) {
             System.out.println(student);
         }
 
+        // =========================
         // FIND BY ID
+        // =========================
+
         System.out.println("\n=== FIND SV002 ===");
+
         studentService.getStudentById("SV002")
                 .ifPresent(System.out::println);
 
+        // =========================
         // UPDATE
-        Student updatedStudent = new Student(
-                "SV002",
-                "Nguyen Van B",
-                21,
-                "b@gmail.com",
-                Gender.FEMALE,
-                7.5,
-                student2.getCreatedAt()
-        );
+        // =========================
+
+        Student student2 = studentService
+                .getStudentById("SV002")
+                .orElseThrow();
 
         student2.setAge(55);
-        studentService.updateStudent(student2);
-//        repository.update(updatedStudent);
 
+        studentService.updateStudent(student2);
+
+        // =========================
         // DELETE
+        // =========================
+
         try {
             studentService.deleteStudent("SV001");
         } catch (StudentNotFoundException e) {
             System.out.println(e.getMessage());
         }
 
+        // =========================
         // READ ALL
+        // =========================
+
         System.out.println("\n=== AFTER UPDATE + DELETE ===");
+
         for (Student student : studentService.getAllStudents()) {
             System.out.println(student);
         }
 
-        // Test Invalid Student Exception
+        // =========================
+        // INVALID STUDENT
+        // =========================
+
         Student invalidStudent = new Student(
                 "SV003",
                 "",
@@ -91,7 +96,7 @@ public class Main {
                 "abc",
                 Gender.MALE,
                 15,
-                LocalDateTime.now()
+                java.time.LocalDateTime.now()
         );
 
         try {
@@ -100,20 +105,36 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        List<Student> resultName = studentService.searchByName("Nguyen");
-        List<Student> resultGPA = studentService.searchByGPA(10.0);
-        List<Student> resultAge = studentService.searchByAge(55);
-        List<Student> resultGender = studentService.searchByGender(Gender.FEMALE);
-        System.out.println("Sau khi search");
+        // =========================
+        // SEARCH
+        // =========================
+
+        List<Student> resultName =
+                studentService.searchByName("Nguyen");
+
+        List<Student> resultGPA =
+                studentService.searchByGPA(10.0);
+
+        List<Student> resultAge =
+                studentService.searchByAge(55);
+
+        List<Student> resultGender =
+                studentService.searchByGender(Gender.FEMALE);
+
+        System.out.println("\n=== SEARCH RESULT ===");
+
         for (Student student : resultName) {
             System.out.println(student);
         }
+
         for (Student student : resultGPA) {
             System.out.println(student);
         }
+
         for (Student student : resultAge) {
             System.out.println(student);
         }
+
         for (Student student : resultGender) {
             System.out.println(student);
         }
