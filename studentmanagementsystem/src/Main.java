@@ -7,96 +7,56 @@ import model.Student;
 import repository.StudentRepository;
 import service.StudentService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        StudentRepository studentRepository =
-                new StudentRepository();
-
         StudentService studentService =
-                new StudentService(studentRepository);
+                new StudentService(new StudentRepository());
 
-        // =========================
         // CREATE
-        // =========================
-
-        List<Student> students =
-                StudentData.createStudents();
-
         try {
-            for (Student student : students) {
-                studentService.addStudent(student);
-            }
+            StudentData.createStudents()
+                    .forEach(studentService::addStudent);
         } catch (DuplicateStudentException e) {
             System.out.println(e.getMessage());
         }
 
-        // =========================
         // READ ALL
-        // =========================
+        printStudents("=== BEFORE UPDATE ===", studentService.getAllStudents());
 
-        System.out.println("=== BEFORE UPDATE ===");
-
-        for (Student student : studentService.getAllStudents()) {
-            System.out.println(student);
-        }
-
-        // =========================
         // FIND BY ID
-        // =========================
-
         System.out.println("\n=== FIND SV002 ===");
-
         studentService.getStudentById("SV002")
                 .ifPresent(System.out::println);
 
-        // =========================
         // UPDATE
-        // =========================
-
-        Student student2 = studentService
-                .getStudentById("SV002")
+        Student student = studentService.getStudentById("SV002")
                 .orElseThrow();
 
-        student2.setAge(55);
+        student.setAge(55);
+        studentService.updateStudent(student);
 
-        studentService.updateStudent(student2);
-
-        // =========================
         // DELETE
-        // =========================
-
         try {
             studentService.deleteStudent("SV001");
         } catch (StudentNotFoundException e) {
             System.out.println(e.getMessage());
         }
 
-        // =========================
         // READ ALL
-        // =========================
+        printStudents(
+                "\n=== AFTER UPDATE + DELETE ===",
+                studentService.getAllStudents()
+        );
 
-        System.out.println("\n=== AFTER UPDATE + DELETE ===");
-
-        for (Student student : studentService.getAllStudents()) {
-            System.out.println(student);
-        }
-
-        // =========================
         // INVALID STUDENT
-        // =========================
-
         Student invalidStudent = new Student(
-                "SV003",
-                "",
-                -5,
-                "abc",
-                Gender.MALE,
-                15,
-                java.time.LocalDateTime.now()
+                "SV003", "", -5, "abc",
+                Gender.MALE, 15, LocalDateTime.now()
         );
 
         try {
@@ -105,70 +65,37 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        // =========================
         // SEARCH
-        // =========================
-
-        List<Student> resultName =
-                studentService.searchByName("Nguyen");
-
-        List<Student> resultGPA =
-                studentService.searchByGPA(10.0);
-
-        List<Student> resultAge =
-                studentService.searchByAge(55);
-
-        List<Student> resultGender =
-                studentService.searchByGender(Gender.FEMALE);
-
         System.out.println("\n=== SEARCH RESULT ===");
 
-        for (Student student : resultName) {
-            System.out.println(student);
-        }
+        printStudents(studentService.searchByName("Nguyen"));
+        printStudents(studentService.searchByGPA(10.0));
+        printStudents(studentService.searchByAge(55));
+        printStudents(studentService.searchByGender(Gender.FEMALE));
 
-        for (Student student : resultGPA) {
-            System.out.println(student);
-        }
-
-        for (Student student : resultAge) {
-            System.out.println(student);
-        }
-
-        for (Student student : resultGender) {
-            System.out.println(student);
-        }
-
-        // =========================
         // SORT
-        // =========================
-        System.out.println("\n=== SORT BY GPA ===");
-        List<Student> resultSortGPA = studentService.sortByGPA();
-        List<Student> resultSortGPAReversed = studentService.sortByGPAReversed();
-        List<Student> resultSortName = studentService.sortByName();
-        List<Student> resultSortNameAndGPA = studentService.sortByNameThenGpa();
-        List<Student> resultSortNameAndGPADesc = studentService.sortByNameThenByGPADesc();
-        for (Student student : resultSortGPA) {
-            System.out.println(student);
-        }
-        for (Student student : resultSortGPAReversed) {
-            System.out.println(student);
-        }
-        for (Student student : resultSortName) {
-            System.out.println(student);
-        }
-        for (Student student : resultSortNameAndGPA) {
-            System.out.println(student);
-        }
-        for (Student student : resultSortNameAndGPADesc) {
-            System.out.println(student);
-        }
+        System.out.println("\n=== SORT RESULT ===");
 
-        // Search dieu kien
-        System.out.println("\n=== SEARCH DIEU KIEN ===");
-        List<Student> resultSearchFemaleWithHighGPA = studentService.searchFemaleStudentsWithHighGPA(8.0);
-        for (Student student : resultSearchFemaleWithHighGPA) {
-            System.out.println(student);
-        }
+        printStudents(studentService.sortByGPA());
+        printStudents(studentService.sortByGPAReversed());
+        printStudents(studentService.sortByName());
+        printStudents(studentService.sortByNameThenGpa());
+        printStudents(studentService.sortByNameThenByGPADesc());
+
+        // SEARCH WITH CONDITION
+        System.out.println("\n=== FEMALE WITH GPA > 8.0 ===");
+
+        printStudents(
+                studentService.searchFemaleStudentsWithHighGPA(8.0)
+        );
+    }
+
+    private static void printStudents(List<Student> students) {
+        students.forEach(System.out::println);
+    }
+
+    private static void printStudents(String title, List<Student> students) {
+        System.out.println(title);
+        printStudents(students);
     }
 }
